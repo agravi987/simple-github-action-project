@@ -1,0 +1,26 @@
+const express = require("express");
+
+const app = express();
+app.use(express.json());
+
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "ok" });
+});
+
+app.get("/students", (req, res) => {
+  res.status(200).json([
+    { id: 1, name: "Ravi", dept: "CSE" },
+    { id: 2, name: "Anu", dept: "ECE" },
+  ]);
+});
+
+if (require.main === module) {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+} else {
+  console.log("App module loaded");
+}
+
+module.exports = app;
