@@ -1,6 +1,18 @@
 # Testing and Linting
 
-This project uses automated tests and linting to catch problems before code is merged or deployed.
+Testing and linting are the first safety net in this project. Before Docker or GitHub Actions matter, the code should prove it behaves correctly.
+
+## The Local Quality Gate
+
+Run these before pushing:
+
+```bash
+npm ci
+npm run lint
+npm test
+```
+
+If all three pass, the project is in good shape for CI.
 
 ## Test File
 
@@ -9,6 +21,10 @@ The test file is:
 ```text
 test/app.test.js
 ```
+
+## Test Strategy
+
+The tests do not open a browser and do not require manual clicking. They call the Express app directly and check the API responses.
 
 ## Complete Test Code
 
@@ -39,6 +55,9 @@ describe("Student API", () => {
 | `GET /health should return ok` | `/health` returns HTTP 200 and `{ "status": "ok" }` |
 | `GET /students should return student list` | `/students` returns HTTP 200 and an array with data |
 
+> [!TIP]
+> A beginner-friendly test usually checks one clear behavior. These tests are short because the API is short.
+
 ## Run Tests Locally
 
 ```bash
@@ -61,7 +80,7 @@ The test script is:
 
 `--runInBand` tells Jest to run tests in a single process. For a small project, this is simple and predictable, especially in CI.
 
-## ESLint Configuration
+## Linting
 
 The ESLint config file is:
 
@@ -102,15 +121,18 @@ npm run lint
 
 If there are no lint errors, the command exits successfully.
 
-## Recommended Local Validation Order
+## Reading Failures
 
-Before pushing code to GitHub, run:
+When tests fail, read:
 
-```bash
-npm ci
-npm run lint
-npm test
-```
+- The test name.
+- The expected value.
+- The actual value.
 
-This is similar to what GitHub Actions does in CI.
+When lint fails, read:
 
+- The file path.
+- The line number.
+- The rule name.
+
+That is usually enough to find and fix the issue quickly.

@@ -1,10 +1,9 @@
 # Docker Hub Secrets
 
-The GitHub Actions workflow needs Docker Hub credentials to push images.
+The workflow needs permission to push images to Docker Hub. That permission must be stored safely.
 
-Never write Docker Hub passwords or tokens directly inside workflow files.
-
-Use GitHub repository secrets instead.
+> [!CAUTION]
+> Never write Docker Hub passwords or tokens directly inside workflow files. Use GitHub repository secrets.
 
 ## Required Secrets
 
@@ -13,7 +12,7 @@ Use GitHub repository secrets instead.
 | `DOCKERHUB_USERNAME` | Your Docker Hub username |
 | `DOCKERHUB_TOKEN` | A Docker Hub access token |
 
-## Create a Docker Hub Access Token
+## Step 1: Create a Docker Hub Access Token
 
 1. Log in to Docker Hub.
 2. Go to account settings.
@@ -23,7 +22,7 @@ Use GitHub repository secrets instead.
 
 Use an access token instead of your Docker Hub account password.
 
-## Add Secrets to GitHub
+## Step 2: Add Secrets to GitHub
 
 1. Open your GitHub repository.
 2. Click `Settings`.
@@ -33,7 +32,7 @@ Use an access token instead of your Docker Hub account password.
 6. Add `DOCKERHUB_USERNAME`.
 7. Add `DOCKERHUB_TOKEN`.
 
-## Confirm Image Name
+## Step 3: Confirm the Image Name
 
 The workflow pushes images using this format:
 
@@ -49,7 +48,7 @@ mydockeruser/student-api:latest
 mydockeruser/student-api:abc123...
 ```
 
-## Verify Image on Docker Hub
+## Step 4: Verify the Image on Docker Hub
 
 After pushing to `main`:
 
@@ -63,7 +62,7 @@ You should see:
 - `latest`
 - A commit SHA based tag
 
-## Pull and Run Published Image
+## Step 5: Pull and Run the Published Image
 
 Replace `<dockerhub-username>` with your Docker Hub username:
 
@@ -78,3 +77,11 @@ Test it:
 curl http://localhost:3000/health
 ```
 
+## Secret Name Checklist
+
+The names must match exactly:
+
+- `DOCKERHUB_USERNAME`
+- `DOCKERHUB_TOKEN`
+
+Secret names are case-sensitive. A small spelling difference can break the workflow.

@@ -1,6 +1,6 @@
 # Prerequisites
 
-Install these tools before creating or running this project.
+Before writing code, make sure your machine and accounts are ready. This avoids half the usual beginner setup problems.
 
 ## Required Tools
 
@@ -13,7 +13,10 @@ Install these tools before creating or running this project.
 | GitHub account | To host the repository and run GitHub Actions |
 | Docker Hub account | To publish Docker images |
 
-## Check Installed Versions
+> [!IMPORTANT]
+> Node.js 20 is the version used in the Dockerfile and GitHub Actions workflow. Using the same version locally keeps behavior consistent.
+
+## Version Check
 
 Run these commands in a terminal:
 
@@ -33,22 +36,34 @@ v20.x.x
 Docker version 2x.x.x
 ```
 
-The exact versions can be different, but Node.js should be version 20 or compatible with this project.
+The exact patch versions can be different. The important part is that Node.js is version `20.x.x` or compatible.
 
 ## Recommended Editor
 
-Use Visual Studio Code. Helpful extensions:
+Visual Studio Code is a good choice for this project.
+
+Helpful extensions:
 
 - ESLint
 - Docker
 - GitHub Actions
 
-## Accounts Needed
+## Accounts to Prepare
 
 Create accounts here:
 
-- GitHub: `https://github.com`
-- Docker Hub: `https://hub.docker.com`
+- GitHub: https://github.com
+- Docker Hub: https://hub.docker.com
 
 You need Docker Hub credentials later when configuring GitHub repository secrets.
 
+## Ready Check
+
+You are ready to continue when:
+
+- `git --version` works.
+- `node --version` shows Node.js 20 or compatible.
+- `npm --version` works.
+- `docker --version` works.
+- You can log in to GitHub.
+- You can log in to Docker Hub.

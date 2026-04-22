@@ -1,10 +1,21 @@
 # Application Code Walkthrough
 
-The main application file is:
+This page explains the Express API in plain language. The main file is:
 
 ```text
 src/app.js
 ```
+
+## What This File Is Responsible For
+
+| Responsibility | Where It Happens |
+| --- | --- |
+| Create Express app | `const app = express()` |
+| Accept JSON | `app.use(express.json())` |
+| Expose health route | `GET /health` |
+| Expose student route | `GET /students` |
+| Start server | `app.listen(...)` |
+| Support tests | `module.exports = app` |
 
 ## Complete Code
 
@@ -37,7 +48,7 @@ if (require.main === module) {
 module.exports = app;
 ```
 
-## Line-by-Line Explanation
+## Walkthrough
 
 ### Import Express
 
@@ -46,6 +57,8 @@ const express = require("express");
 ```
 
 This imports the Express package.
+
+Express gives us a simple way to define API routes like `/health` and `/students`.
 
 ### Create the App
 
@@ -66,7 +79,7 @@ app.get("/health", (req, res) => {
 
 This endpoint is useful for health checks. It confirms that the application is running.
 
-Test it locally:
+Try it:
 
 ```bash
 curl http://localhost:3000/health
@@ -85,7 +98,7 @@ app.get("/students", (req, res) => {
 
 This endpoint returns sample student data.
 
-Test it locally:
+Try it:
 
 ```bash
 curl http://localhost:3000/students
@@ -110,6 +123,9 @@ npm start
 
 The `PORT` value can come from an environment variable. If no value is provided, the app uses port `3000`.
 
+> [!NOTE]
+> This pattern keeps the app testable. Tests can import the app without accidentally starting a real server.
+
 ### Export App for Tests
 
 ```js
@@ -120,7 +136,7 @@ This allows the test file to import the Express app directly.
 
 This is important because Supertest can test the API without needing a separate manual server process.
 
-## Run the App
+## Run It Locally
 
 ```bash
 npm start
@@ -132,7 +148,7 @@ Expected output:
 Server is running on port 3000
 ```
 
-## Verify the App
+## Verify It
 
 Open another terminal:
 
@@ -141,3 +157,9 @@ curl http://localhost:3000/health
 curl http://localhost:3000/students
 ```
 
+## What Good Looks Like
+
+| Command | Expected Result |
+| --- | --- |
+| `curl http://localhost:3000/health` | JSON response with `status` equal to `ok` |
+| `curl http://localhost:3000/students` | JSON array containing student records |

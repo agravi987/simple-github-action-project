@@ -1,6 +1,6 @@
 # Final Checklist
 
-Use this checklist to confirm the project is complete.
+Use this page as your end-to-end completion report. When everything here is checked, the project is working from local development to Docker Hub publishing.
 
 ## Local Project Checklist
 
@@ -13,7 +13,7 @@ Use this checklist to confirm the project is complete.
 - [ ] `.dockerignore` exists.
 - [ ] `.github/workflows/ci.yml` exists.
 
-## Local Validation Checklist
+## Local Validation
 
 Run these commands from the project root:
 
@@ -31,6 +31,11 @@ In another terminal:
 curl http://localhost:3000/health
 curl http://localhost:3000/students
 ```
+
+Expected result:
+
+- `/health` returns `{ "status": "ok" }`.
+- `/students` returns a JSON array.
 
 ## GitHub Checklist
 
@@ -63,3 +68,12 @@ The project is working end to end when:
 8. GitHub Actions pushes Docker image on `main`.
 9. Docker Hub shows `latest` and commit SHA image tags.
 
+## Final Confidence Check
+
+| Question | Good Answer |
+| --- | --- |
+| Can a new developer run the app locally? | Yes |
+| Can CI catch broken code? | Yes |
+| Can the app be packaged as Docker image? | Yes |
+| Can GitHub Actions publish the image? | Yes |
+| Can someone follow the docs from zero? | Yes |

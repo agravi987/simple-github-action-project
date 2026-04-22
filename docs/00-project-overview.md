@@ -1,40 +1,37 @@
 # Project Overview
 
-## Goal
+This project is a compact DevOps pipeline you can understand from top to bottom. It starts with a tiny Express API and ends with an automated Docker image push to Docker Hub.
 
-The goal of this project is to demonstrate a complete beginner DevOps workflow using a simple Node.js API.
+## What You Are Building
 
-By the end, you should understand how source code moves through this path:
+You are building a real, working delivery flow:
 
-```text
-Developer writes code
-        |
-        v
-Code is pushed to GitHub
-        |
-        v
-GitHub Actions runs lint and tests
-        |
-        v
-Docker image is built
-        |
-        v
-Docker image is pushed to Docker Hub
+```mermaid
+flowchart TD
+    A["Node.js Express API"] --> B["Jest and Supertest API tests"]
+    A --> C["ESLint code quality check"]
+    B --> D["GitHub Actions workflow"]
+    C --> D
+    D --> E["Docker image build"]
+    E --> F["Docker Hub image push"]
 ```
+
+> [!NOTE]
+> The app is intentionally small. That is useful for learning because you can focus on the DevOps workflow instead of fighting application complexity.
 
 ## Technology Stack
 
-| Area | Tool |
-| --- | --- |
-| Runtime | Node.js 20 |
-| Web framework | Express |
-| Testing | Jest and Supertest |
-| Linting | ESLint |
-| Containerization | Docker |
-| CI/CD | GitHub Actions |
-| Image registry | Docker Hub |
+| Area | Tool | Role in This Project |
+| --- | --- | --- |
+| Runtime | Node.js 20 | Runs the JavaScript application |
+| Web framework | Express | Creates the API routes |
+| Testing | Jest, Supertest | Verifies the API behavior |
+| Linting | ESLint | Enforces basic code quality rules |
+| Containerization | Docker | Packages the app into an image |
+| CI/CD | GitHub Actions | Automates checks and image publishing |
+| Registry | Docker Hub | Stores the pushed Docker image |
 
-## Current Repository Structure
+## Repository Map
 
 ```text
 simple-github-action-project/
@@ -55,7 +52,7 @@ simple-github-action-project/
   README.md
 ```
 
-## What the API Does
+## API Surface
 
 The API exposes two endpoints:
 
@@ -64,7 +61,7 @@ The API exposes two endpoints:
 | GET | `/health` | Confirms the API is running |
 | GET | `/students` | Returns a sample student list |
 
-Example response from `/health`:
+Health check response:
 
 ```json
 {
@@ -72,7 +69,7 @@ Example response from `/health`:
 }
 ```
 
-Example response from `/students`:
+Student list response:
 
 ```json
 [
@@ -91,29 +88,27 @@ Example response from `/students`:
 
 ## CI/CD Behavior
 
-The workflow file is located at:
+The workflow lives here:
 
 ```text
 .github/workflows/ci.yml
 ```
 
-It runs when:
+It reacts to two common GitHub events:
 
-- Code is pushed to the `main` branch.
-- A pull request is opened against the `main` branch.
+| Event | What Happens |
+| --- | --- |
+| Pull request to `main` | Install dependencies, lint, test, prepare Docker builder |
+| Push to `main` | Do all checks, log in to Docker Hub, build image, push image |
 
-For pull requests, it runs:
+## Mental Model
 
-- Checkout
-- Node.js setup
-- Dependency installation
-- Linting
-- Tests
-- Docker build setup
+Think of the project as three layers:
 
-For pushes to `main`, it also:
+| Layer | Question It Answers |
+| --- | --- |
+| App layer | Does the API work? |
+| Quality layer | Can tests and lint prove it is safe to ship? |
+| Delivery layer | Can CI/CD package and publish it automatically? |
 
-- Logs in to Docker Hub.
-- Builds the Docker image.
-- Pushes Docker image tags to Docker Hub.
-
+When all three layers pass, you have an end-to-end DevOps workflow.

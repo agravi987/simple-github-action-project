@@ -1,6 +1,14 @@
 # Docker Guide
 
-This project includes a Dockerfile so the API can run inside a container.
+Docker packages the app with everything it needs to run. Instead of saying "it works on my machine," we build an image that can run the same way in many places.
+
+## What Docker Adds
+
+| Without Docker | With Docker |
+| --- | --- |
+| You manually prepare Node.js and dependencies | The image contains the app setup |
+| Environment differences can break the app | The container runs consistently |
+| Deployment is harder to repeat | Image build and run steps are repeatable |
 
 ## Dockerfile
 
@@ -40,6 +48,9 @@ CMD [ "node", "src/app.js" ]
 | `EXPOSE 3000` | Documents that the app listens on port 3000 |
 | `CMD [ "node", "src/app.js" ]` | Starts the app when the container runs |
 
+> [!NOTE]
+> `EXPOSE 3000` is documentation inside the image. The actual port connection happens when you run `docker run -p 3000:3000`.
+
 ## .dockerignore
 
 The `.dockerignore` file prevents unnecessary files from being copied into the Docker image.
@@ -55,13 +66,20 @@ Dockerfile
 coverage
 ```
 
-## Build Docker Image Locally
+## Build the Image
 
 ```bash
 docker build -t student-api:local .
 ```
 
-## Run Docker Container Locally
+The tag means:
+
+```text
+image name: student-api
+image tag:  local
+```
+
+## Run the Container
 
 ```bash
 docker run --rm -p 3000:3000 student-api:local
@@ -72,6 +90,8 @@ This maps:
 ```text
 host port 3000 -> container port 3000
 ```
+
+`--rm` removes the stopped container automatically.
 
 ## Test the Running Container
 
@@ -90,7 +110,7 @@ Expected health response:
 }
 ```
 
-## Stop the Container
+## Stop It
 
 If you used `docker run --rm -p 3000:3000 student-api:local`, press:
 
@@ -98,15 +118,16 @@ If you used `docker run --rm -p 3000:3000 student-api:local`, press:
 Ctrl + C
 ```
 
-## List Local Images
+## Useful Docker Commands
 
 ```bash
 docker images
+docker ps
+docker ps -a
 ```
 
-## Remove Local Image
+Remove the local image when you no longer need it:
 
 ```bash
 docker rmi student-api:local
 ```
-

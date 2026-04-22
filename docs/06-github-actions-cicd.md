@@ -1,6 +1,16 @@
 # GitHub Actions CI/CD
 
-This project uses GitHub Actions to automate linting, testing, Docker build, and Docker image publishing.
+GitHub Actions is the automation engine for this project. Once code reaches GitHub, the workflow checks it and, on `main`, publishes a Docker image.
+
+## What CI/CD Means Here
+
+| Term | In This Project |
+| --- | --- |
+| CI | Install dependencies, run lint, run tests |
+| CD | Build and push the Docker image to Docker Hub |
+
+> [!IMPORTANT]
+> Pull requests validate the code. Pushes to `main` publish the image.
 
 ## Workflow File Location
 
@@ -69,6 +79,21 @@ jobs:
 | --- | --- | --- |
 | Pull request | `main` | Lint, tests, Docker Buildx setup |
 | Push | `main` | Lint, tests, Docker login, image build, image push |
+
+## Workflow Map
+
+```mermaid
+flowchart TD
+    A["Checkout repository"] --> B["Setup Node.js 20"]
+    B --> C["Install dependencies with npm ci"]
+    C --> D["Run ESLint"]
+    D --> E["Run Jest tests"]
+    E --> F["Setup Docker Buildx"]
+    F --> G{"Is event push?"}
+    G -- "No, pull request" --> H["Stop after validation"]
+    G -- "Yes, push to main" --> I["Login to Docker Hub"]
+    I --> J["Build and push Docker image"]
+```
 
 ## Job Name
 
@@ -172,6 +197,8 @@ The workflow creates two tags:
 | `latest` | Latest image from the `main` branch |
 | `${{ github.sha }}` | Unique image tag based on the Git commit SHA |
 
+The commit SHA tag is useful because it points to one exact version of the code.
+
 ## How to View Workflow Runs
 
 1. Open the GitHub repository.
@@ -193,3 +220,9 @@ Merge into main
 GitHub Actions builds and pushes Docker image
 ```
 
+## What Success Looks Like
+
+- The GitHub Actions run has a green check.
+- The `Run lint` step passes.
+- The `Run tests` step passes.
+- On push to `main`, Docker Hub receives new image tags.

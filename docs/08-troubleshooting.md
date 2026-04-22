@@ -1,6 +1,17 @@
 # Troubleshooting
 
-Use this guide when something fails locally or in GitHub Actions.
+When something fails, do not guess randomly. Find the failing layer first, then fix that layer.
+
+## Quick Diagnosis
+
+| Symptom | Start Here |
+| --- | --- |
+| App does not start | Check Node.js version and port usage |
+| Tests fail | Check route paths and expected response data |
+| Lint fails | Check ESLint line number and rule name |
+| Docker build fails | Check Dockerfile, lockfile, and Docker Desktop |
+| GitHub Actions fails | Open the failed workflow step logs |
+| Docker push fails | Check GitHub secrets and Docker Hub token |
 
 ## `npm ci` Fails
 
@@ -27,6 +38,9 @@ npm install
 npm ci
 ```
 
+> [!WARNING]
+> Removing `package-lock.json` changes dependency resolution. Use this fix when the lockfile is broken or out of sync, then commit the new lockfile.
+
 ## `npm run lint` Fails
 
 Common causes:
@@ -38,6 +52,12 @@ Example fix:
 
 ```js
 const message = "hello";
+```
+
+Then rerun:
+
+```bash
+npm run lint
 ```
 
 ## `npm test` Fails
@@ -140,3 +160,12 @@ Check:
 - You pushed to `main` or opened a pull request to `main`.
 - The repository has GitHub Actions enabled.
 
+## Best Debugging Habit
+
+Fix one failure at a time:
+
+1. Reproduce it locally if possible.
+2. Read the exact error message.
+3. Fix the smallest thing that explains the error.
+4. Rerun the same command.
+5. Move to the next layer only after the current one passes.
