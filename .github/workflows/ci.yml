@@ -1,11 +1,10 @@
-name: Node.js CI + Docker
+name: Node.js CI + Docker Hub
 
 on:
   push:
     branches: ["main"]
   pull_request:
     branches: ["main"]
-  workflow_dispatch:
 
 jobs:
   test-lint-build-push:
@@ -46,4 +45,6 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/student-api:latest
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/student-api:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/student-api:${{ github.sha }}
